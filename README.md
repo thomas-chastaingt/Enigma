@@ -1,2 +1,2 @@
-# go-facebook-bot
-🤖 A facebook messenger bot with Golang
+# gobot
+🤖 A slack messenger bot with Golang
