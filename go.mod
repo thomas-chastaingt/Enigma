@@ -1,5 +1,3 @@
-module github.com/thomas-chastaingt/go-facebook-bot
+module github.com/thomas-chastaingt/Enigmatic
 
 go 1.14
-
-
