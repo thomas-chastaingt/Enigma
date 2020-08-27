@@ -2,25 +2,18 @@ package enigma
 
 import "bytes"
 
-// Enigma represents an Enigma machine with configured rotors, plugs,
-// and a reflector. Most states are stored in the rotors themselves.
 type Enigma struct {
 	Reflector Reflector
 	Plugboard Plugboard
 	Rotors    []*Rotor
 }
 
-// RotorConfig reprensents a configuration for a rotor as set by the user:
-// ID from the pre-defined list, a starting position (A to Z), and a ring
-// setting (1 to 26).
 type RotorConfig struct {
 	ID    string
 	Start byte
 	Ring  int
 }
 
-// NewEnigma is the Enigma constructor, accepting an array of RotorConfig objects
-// for rotors, a reflector ID/name, and an array of plugboard pairs.
 func NewEnigma(rotorConfiguration []RotorConfig, refID string, plugs []string) *Enigma {
 	rotors := make([]*Rotor, len(rotorConfiguration))
 	for i, configuration := range rotorConfiguration {
@@ -52,7 +45,6 @@ func (e *Enigma) moveRotors() {
 	farRight.move(1)
 }
 
-// EncodeChar encodes a single character.
 func (e *Enigma) EncodeChar(letter byte) byte {
 	e.moveRotors()
 
@@ -75,7 +67,6 @@ func (e *Enigma) EncodeChar(letter byte) byte {
 	return letter
 }
 
-// EncodeString encodes a string.
 func (e *Enigma) EncodeString(text string) string {
 	var result bytes.Buffer
 	for i := range text {

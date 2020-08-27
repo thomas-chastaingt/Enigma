@@ -65,7 +65,18 @@ func main() {
 
 		if argv.Help || len(plaintext) == 0 {
 			com := ctx.Command()
-			com.Text = DescriptionTemplate
+			com.Text = `
+			usage: enigma <text> [--rotors=I II III] [--rings=3 4 3] [--reflector=C]
+								 [--plugboard=AB CD] [--position=A A A]
+			Enigma cipher machine emulator
+			Encrypt all the things with the power of this handy Enigma emulator:
+			it fully supports the most popular M3 and M4 models, and quite a few
+			others, too. Choose a rotor set and a reflector, configure rings and
+			starting positions of the rotors, select plugboard pairs--and you're
+			all set! Don't forget: cryptography is only real when shared. Make a
+			friend.
+			Enjoy!
+			`
 			ctx.String(com.Usage(ctx))
 			return nil
 		}
@@ -84,6 +95,23 @@ func main() {
 			fmt.Print(encoded)
 			return nil
 		}
+
+		const OutputTemplate = `
+		{{ (.Ctx.Color).Bold "Original text:" }}
+		  {{ .Original }}
+		{{ if ne (.Plain) (.Original) }}
+		{{ (.Ctx.Color).Bold "Processed original text:" }}
+		  {{ .Plain }}
+		{{ end }}
+		{{ (.Ctx.Color).Bold "Enigma configuration:" }}
+		  Rotors: {{ .Args.Rotors }}
+		  Rotor positions: {{ .Args.Position }}
+		  Rings: {{ .Args.Rings }}
+		  Plugboard: {{ or (.Args.Plugboard) ("empty") }}
+		  Reflector: {{ .Args.Reflector }}
+		{{ (.Ctx.Color).Bold "Result:" }}
+		  {{ .Encoded }}
+		`
 
 		tmpl, _ := template.New("cli").Parse(OutputTemplate)
 		err := tmpl.Execute(os.Stdout, struct {
